@@ -1,1 +1,0 @@
-# Introduction_of_NN_using_RBM
