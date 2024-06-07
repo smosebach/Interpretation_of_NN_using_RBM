@@ -1,7 +1,7 @@
 using Flux
 using Random
 using Flux.Data: DataLoader
-using Flux: onehotbatch, onecold, onehot, @epochs
+using Flux: onehotbatch, onecold, onehot #, @epochs
 using NNlib
 using DelimitedFiles
 using Parameters

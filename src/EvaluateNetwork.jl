@@ -1,4 +1,9 @@
 # load necessarry packages and files
+import Pkg; Pkg.add("Flux")
+import Pkg; Pkg.add("Parameters")
+import Pkg; Pkg.add("NNlib")
+
+using Serialization
 using DelimitedFiles
 using Random
 include("DataPreparation.jl")
@@ -29,22 +34,26 @@ end
 
 # set parameters
 # MTB data
-params = Hyperparameters(mode = "chain", actFunction = identity, η=0.0003, lossFunction = Flux.mse)
-data = DataParameters(file_name = "./data/Tubercolosis/Tb_Train1.csv", input_length = 28)
+# params = Hyperparameters(mode = "chain", actFunction = identity, η=0.0003, lossFunction = Flux.mse)
+# data = DataParameters(file_name = "./data/Tubercolosis/Tb_Train1.csv", input_length = 28)
 
 # AIV data
-#params = Hyperparameters(mode = "single", actFunction = Flux.celu, η=0.00005, lossFunction = Flux.logitbinarycrossentropy)
-#data = DataParameters(file_name = "./data/NS1/NS1_H5_H7_Train1.csv", input_length = 249)
+params = Hyperparameters(mode = "single", actFunction = Flux.celu, η=0.00005, lossFunction = Flux.logitbinarycrossentropy)
+data = DataParameters(file_name = "./data/NS1/NS1_H5_H7_Train1.csv", input_length = 249)
 aminoAcidEncoding = AminoAcidEncoding()
 
 # train and evaluate network
 m, acc, loss, dict, l, w = train_network_AA(params, data, aminoAcidEncoding)
 
 # evaluate model on test data (and train 2)
-#val = evaluateTestData(m, "./data/NS1/NS1_H5_H7_Train2.csv", dict)
-val = evaluateTestData(m, "./data/Tubercolosis/Tb_Train2.csv", dict)
+val = evaluateTestData(m, "./data/NS1/NS1_H5_H7_Train2.csv", dict)
+# val = evaluateTestData(m, "./data/Tubercolosis/Tb_Train2.csv", dict)
 
-#val2 = evaluateTestData(m, "./data/NS1/NS1_H5_H7_Test.csv", dict)
-val2 = evaluateTestData(m, "./data/Tubercolosis/Tb_Test.csv", dict)
+val2 = evaluateTestData(m, "./data/NS1/NS1_H5_H7_Test.csv", dict)
+#val2 = evaluateTestData(m, "./data/Tubercolosis/Tb_Test.csv", dict)
+
+# Saving model and dictionary
+serialize("model.dat", m)
+serialize("dict.dat", dict)
 
 

@@ -1,6 +1,15 @@
 using DelimitedFiles
+using Serialization
+using Flux
+
+# importing scripts
+include("DataPreparation.jl")
+include("EvaluateNetwork.jl")
 
 # after creating NN that in evaluateNetwork.jl saved as m
+m = deserialize("model.dat")
+dict = deserialize("dict.dat")
+
 
 # choose data to label (AIV or MTB)
 file_name = "./data/NS1/NS1_H5_H7_Train2.csv"
